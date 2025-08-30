@@ -1268,7 +1268,7 @@ const Portfolio = () => {
             fontFamily: "'Courier New', monospace",
             fontSize: isMobile ? '10px' : '14px'
           }}>
-            {isMobile ? '&gt; Built with React.js' : '&gt; Built with React.js | Designed with <3 for innovation'}
+            {isMobile ? 'Manahil Saeed' : '// Manahil Saeed'}
           </p>
         </div>
       </footer>
