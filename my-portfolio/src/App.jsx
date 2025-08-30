@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import {
-  ChevronDown,
-  Github,
-  Linkedin,
-  Mail,
-  MapPin,
-  Code,
-  Briefcase,
-  GraduationCap,
+import { 
+  ChevronDown, 
+  Github, 
+  Linkedin, 
+  Mail, 
+  MapPin, 
+  Code, 
+  Briefcase, 
+  GraduationCap, 
   Award,
   ExternalLink,
   Star,
@@ -20,16 +20,14 @@ import {
   Smartphone,
   Database,
   Globe,
+
   Terminal,
   Cpu,
   Server,
   Layers,
   Binary,
   Wifi,
-  Activity,
-  Keyboard,
-  Mouse,
-  Lightbulb
+  Activity
 } from 'lucide-react';
 
 const Portfolio = () => {
@@ -39,6 +37,7 @@ const Portfolio = () => {
   const [terminalText, setTerminalText] = useState('');
   const [matrixRain, setMatrixRain] = useState([]);
   const [glitchActive, setGlitchActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const terminalLines = [
     '$ whoami',
@@ -53,12 +52,22 @@ const Portfolio = () => {
   ];
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
     const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+      if (!isMobile) {
+        setMousePosition({ x: e.clientX, y: e.clientY });
+      }
     };
 
     // Terminal typing animation
@@ -68,9 +77,9 @@ const Portfolio = () => {
       if (terminalIndex < terminalLines.length) {
         const currentLine = terminalLines[terminalIndex];
         if (charIndex <= currentLine.length) {
-          setTerminalText(terminalLines.slice(0, terminalIndex).join('\n') +
-            (terminalIndex > 0 ? '\n' : '') +
-            currentLine.substring(0, charIndex));
+          setTerminalText(terminalLines.slice(0, terminalIndex).join('\n') + 
+                         (terminalIndex > 0 ? '\n' : '') + 
+                         currentLine.substring(0, charIndex));
           charIndex++;
         } else {
           terminalIndex++;
@@ -84,18 +93,20 @@ const Portfolio = () => {
 
     // Matrix rain effect
     const createMatrixRain = () => {
-      const chars = '01';
-      const drops = [];
-      for (let i = 0; i < 30; i++) {
-        drops.push({
-          id: i,
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-          speed: Math.random() * 2 + 1,
-          char: chars[Math.floor(Math.random() * chars.length)]
-        });
+      if (!isMobile) {
+        const chars = '01';
+        const drops = [];
+        for (let i = 0; i < 30; i++) {
+          drops.push({
+            id: i,
+            x: Math.random() * 100,
+            y: Math.random() * 100,
+            speed: Math.random() * 2 + 1,
+            char: chars[Math.floor(Math.random() * chars.length)]
+          });
+        }
+        setMatrixRain(drops);
       }
-      setMatrixRain(drops);
     };
 
     // Glitch effect
@@ -113,14 +124,15 @@ const Portfolio = () => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', checkMobile);
       clearInterval(glitchInterval);
     };
   }, []);
 
   const scrollToSection = (sectionId) => {
     setActiveSection(sectionId);
-    document.getElementById(sectionId)?.scrollIntoView({
-      behavior: 'smooth'
+    document.getElementById(sectionId)?.scrollIntoView({ 
+      behavior: 'smooth' 
     });
   };
 
@@ -135,27 +147,27 @@ const Portfolio = () => {
 
   const skills_languages = [
     { name: 'JavaScript', icon: <Monitor size={24} />, color: '#00d4ff' },
-    { name: 'Java', icon: <Keyboard size={24} />, color: '#0088ff' },
-    { name: 'HTML/CSS', icon: <Code size={24} />, color: '#0099ff' },
+    { name: 'Java', icon: <Code size={24} />, color: '#0088ff' },
+    { name: 'HTML/CSS', icon: <Globe size={24} />, color: '#0099ff' },
     { name: 'Python', icon: <Database size={24} />, color: '#0066ff' },
     { name: 'C/C++', icon: <Cpu size={24} />, color: '#0080ff' },
     { name: 'Assembly', icon: <Binary size={24} />, color: '#00ccff' },
     { name: 'SQL', icon: <Server size={24} />, color: '#00b3ff' },
-    { name: 'MATLAB', icon: <Mouse size={24} />, color: '#00b3ff' },
-    { name: 'PHP', icon: <Lightbulb size={24} />, color: '#00b3ff' },
-    { name: 'Verilog', icon: <Activity size={24} />, color: '#0088ff' }
+    { name: 'MATLAB', icon: <Activity size={24} />, color: '#00b3ff' },
+    { name: 'PHP', icon: <Terminal size={24} />, color: '#00b3ff' },
+    { name: 'Verilog', icon: <Layers size={24} />, color: '#0088ff' }
   ];
 
-  const skills = [
+   const skills = [
     { name: 'React', icon: <Monitor size={24} />, color: '#00d4ff' },
     { name: 'D3.js', icon: <Code size={24} />, color: '#0099ff' },
     { name: 'Python Pandas', icon: <Database size={24} />, color: '#0066ff' },
     { name: 'Node.js', icon: <Globe size={24} />, color: '#0080ff' },
     { name: 'FastAPI', icon: <Zap size={24} />, color: '#00ccff' },
     { name: 'Flask', icon: <Star size={24} />, color: '#00b3ff' },
-    { name: 'Angular', icon: <Lightbulb size={24} />, color: '#00b3ff' },
-    { name: 'TensorFlow', icon: <Activity size={24} />, color: '#0088ff' },
-    { name: 'Django', icon: <Mouse size={24} />, color: '#00b3ff' },
+    { name: 'Angular', icon: <Activity size={24} />, color: '#00b3ff' },
+    { name: 'TensorFlow', icon: <Cpu size={24} />, color: '#0088ff' },
+    { name: 'Django', icon: <Server size={24} />, color: '#00b3ff' },
     { name: 'NumPy', icon: <Layers size={24} />, color: '#0088ff' }
   ];
 
@@ -164,8 +176,8 @@ const Portfolio = () => {
       title: 'Signals Engineering Assistant',
       company: 'Toronto Transit Commission (TTC)',
       period: 'May 2025 - August 2025',
-      description: 'Worked under the Operations & Infrastructure department (Signals, Engineering, Communications)',
-      skills: ['React', 'Node.js', 'C/C++', 'Bash', 'HTML/CSS', 'JavaScript', 'Python', 'FastAPI', 'pandas', 'D3.js', 'Linux'],
+      description: 'Working under the Operations & Infrastructure department (Signals, Engineering, Communications)',
+      skills: ['React', 'Node.js', 'C/C++', 'Bash', 'HTML/CSS','JavaScript', 'Python', 'FastAPI', 'pandas', 'D3.js', 'Linux'],
       logo: '🚆',
       color: '#00d4ff'
     },
@@ -235,7 +247,7 @@ const Portfolio = () => {
     },
     section: {
       width: '100%',
-      padding: '80px 24px',
+      padding: isMobile ? '60px 16px' : '80px 24px',
       position: 'relative'
     },
     maxWidth: {
@@ -253,7 +265,7 @@ const Portfolio = () => {
       backgroundColor: 'rgba(0, 20, 40, 0.8)',
       backdropFilter: 'blur(10px)',
       borderRadius: '12px',
-      padding: '24px',
+      padding: isMobile ? '16px' : '24px',
       transition: 'all 0.3s ease',
       border: '1px solid rgba(0, 212, 255, 0.3)',
       boxShadow: '0 0 20px rgba(0, 100, 200, 0.1)'
@@ -278,18 +290,18 @@ const Portfolio = () => {
     },
     grid: {
       display: 'grid',
-      gap: '24px'
+      gap: isMobile ? '16px' : '24px'
     },
     terminal: {
       backgroundColor: 'rgba(0, 0, 0, 0.9)',
       border: '1px solid #00d4ff',
       borderRadius: '8px',
-      padding: '20px',
+      padding: isMobile ? '12px' : '20px',
       fontFamily: "'Courier New', monospace",
-      fontSize: '14px',
+      fontSize: isMobile ? '10px' : '14px',
       color: '#00ff88',
       whiteSpace: 'pre-wrap',
-      minHeight: '200px'
+      minHeight: isMobile ? '120px' : '200px'
     }
   };
 
@@ -304,7 +316,7 @@ const Portfolio = () => {
     borderBottom: isScrolled ? '1px solid rgba(0, 212, 255, 0.3)' : 'none'
   };
 
-  const backgroundElements = [
+  const backgroundElements = !isMobile ? [
     {
       width: '400px',
       height: '400px',
@@ -341,50 +353,54 @@ const Portfolio = () => {
       transition: 'transform 1s ease-out',
       filter: 'blur(40px)'
     }
-  ];
+  ] : [];
 
   return (
     <div style={baseStyles.container}>
-      {/* Matrix Rain Background */}
-      <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 1 }}>
-        {matrixRain.map((drop) => (
-          <div
-            key={drop.id}
-            style={{
-              position: 'absolute',
-              left: `${drop.x}%`,
-              top: `${drop.y}%`,
-              color: 'rgba(0, 212, 255, 0.3)',
-              fontSize: '12px',
-              fontFamily: "'Courier New', monospace",
-              animation: `matrixFall ${drop.speed}s linear infinite`
-            }}
-          >
-            {drop.char}
-          </div>
-        ))}
-      </div>
+      {/* Matrix Rain Background - Desktop only */}
+      {!isMobile && (
+        <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 1 }}>
+          {matrixRain.map((drop) => (
+            <div
+              key={drop.id}
+              style={{
+                position: 'absolute',
+                left: `${drop.x}%`,
+                top: `${drop.y}%`,
+                color: 'rgba(0, 212, 255, 0.3)',
+                fontSize: '12px',
+                fontFamily: "'Courier New', monospace",
+                animation: `matrixFall ${drop.speed}s linear infinite`
+              }}
+            >
+              {drop.char}
+            </div>
+          ))}
+        </div>
+      )}
 
-      {/* Animated Background Elements */}
-      <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 2 }}>
-        {backgroundElements.map((element, index) => (
-          <div key={index} style={element} />
-        ))}
-      </div>
+      {/* Animated Background Elements - Desktop only */}
+      {!isMobile && (
+        <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 2 }}>
+          {backgroundElements.map((element, index) => (
+            <div key={index} style={element} />
+          ))}
+        </div>
+      )}
 
       {/* Navigation */}
       <nav style={navStyle}>
-        <div style={{ ...baseStyles.maxWidth, padding: '16px 24px' }}>
+        <div style={{ ...baseStyles.maxWidth, padding: isMobile ? '12px 16px' : '16px 24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{
-              fontSize: '24px',
-              fontWeight: 'bold',
+            <div style={{ 
+              fontSize: isMobile ? '18px' : '24px', 
+              fontWeight: 'bold', 
               ...baseStyles.gradientText,
               fontFamily: "'Courier New', monospace"
             }}>
-              &gt; Manahil.exe
+              {isMobile ? 'M.exe' : '> Manahil.exe'}
             </div>
-            <div style={{ display: 'flex', gap: '24px' }}>
+            <div style={{ display: 'flex', gap: isMobile ? '4px' : '24px', flexWrap: 'wrap' }}>
               {navItems.map((item) => (
                 <button
                   key={item.id}
@@ -393,15 +409,15 @@ const Portfolio = () => {
                     background: 'none',
                     border: activeSection === item.id ? '1px solid #00d4ff' : 'none',
                     borderRadius: '4px',
-                    padding: '8px 12px',
+                    padding: isMobile ? '4px 6px' : '8px 12px',
                     color: activeSection === item.id ? '#00d4ff' : '#ffffff',
                     cursor: 'pointer',
-                    fontSize: '14px',
+                    fontSize: isMobile ? '10px' : '14px',
                     transition: 'all 0.3s ease',
                     fontFamily: "'Courier New', monospace",
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '8px'
+                    gap: isMobile ? '2px' : '8px'
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.color = '#00d4ff';
@@ -416,8 +432,8 @@ const Portfolio = () => {
                     }
                   }}
                 >
-                  {item.icon}
-                  {item.label}
+                  {React.cloneElement(item.icon, { size: isMobile ? 12 : 16 })}
+                  {!isMobile && item.label}
                 </button>
               ))}
             </div>
@@ -430,7 +446,7 @@ const Portfolio = () => {
         <div style={{ textAlign: 'center', zIndex: 10, ...baseStyles.maxWidth }}>
           {/* Terminal Window */}
           <div style={{
-            maxWidth: '600px',
+            maxWidth: isMobile ? '95%' : '600px',
             margin: '0 auto 40px',
             backgroundColor: 'rgba(0, 0, 0, 0.9)',
             borderRadius: '12px',
@@ -442,22 +458,22 @@ const Portfolio = () => {
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              padding: '12px 16px',
+              padding: isMobile ? '8px 12px' : '12px 16px',
               backgroundColor: 'rgba(0, 212, 255, 0.1)',
               borderBottom: '1px solid #00d4ff'
             }}>
               <div style={{ display: 'flex', gap: '8px' }}>
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ff5f56' }}></div>
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#ffbd2e' }}></div>
-                <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#27ca3f' }}></div>
+                <div style={{ width: isMobile ? '8px' : '12px', height: isMobile ? '8px' : '12px', borderRadius: '50%', backgroundColor: '#ff5f56' }}></div>
+                <div style={{ width: isMobile ? '8px' : '12px', height: isMobile ? '8px' : '12px', borderRadius: '50%', backgroundColor: '#ffbd2e' }}></div>
+                <div style={{ width: isMobile ? '8px' : '12px', height: isMobile ? '8px' : '12px', borderRadius: '50%', backgroundColor: '#27ca3f' }}></div>
               </div>
-              <div style={{
-                marginLeft: '16px',
-                color: '#00d4ff',
-                fontSize: '14px',
+              <div style={{ 
+                marginLeft: '16px', 
+                color: '#00d4ff', 
+                fontSize: isMobile ? '8px' : '14px',
                 fontFamily: "'Courier New', monospace"
               }}>
-                terminal@manahil-portfolio
+                {isMobile ? 'terminal@m-portfolio' : 'terminal@manahil-portfolio'}
               </div>
             </div>
             {/* Terminal Content */}
@@ -466,81 +482,89 @@ const Portfolio = () => {
               <span style={{ animation: 'blink 1s infinite' }}>█</span>
             </div>
           </div>
-
+          
           <h1 style={{
-            fontSize: '5rem',
+            fontSize: isMobile ? '2rem' : '5rem',
             fontWeight: 'bold',
             marginBottom: '24px',
             ...baseStyles.gradientText,
             fontFamily: "'Courier New', monospace",
             textShadow: glitchActive ? '2px 0 #ff00ff, -2px 0 #00ffff' : 'none',
-            animation: glitchActive ? 'glitch 0.3s' : 'none'
+            animation: glitchActive ? 'glitch 0.3s' : 'none',
+            lineHeight: 1.1
           }}>
-            Manahil_Saeed.init()
+            {isMobile ? 'Manahil_Saeed' : 'Manahil_Saeed.init()'}
           </h1>
-
-          <p style={{
-            fontSize: '24px',
-            color: '#00d4ff',
+          
+          <p style={{ 
+            fontSize: isMobile ? '14px' : '24px', 
+            color: '#00d4ff', 
             marginBottom: '32px',
-            fontFamily: "'Courier New', monospace"
+            fontFamily: "'Courier New', monospace",
+            textAlign: 'center',
+            padding: isMobile ? '0 16px' : '0'
           }}>
-            &gt; Third-year Computer Engineering student
+            {isMobile ? 'Computer Engineering student' : '> Third-year Computer Engineering student'}
           </p>
-
-          <p style={{
-            fontSize: '18px',
-            color: '#66b3ff',
-            marginBottom: '48px',
-            maxWidth: '600px',
+          
+          <p style={{ 
+            fontSize: isMobile ? '12px' : '18px', 
+            color: '#66b3ff', 
+            marginBottom: '48px', 
+            maxWidth: isMobile ? '90%' : '600px', 
             margin: '0 auto 48px',
-            fontFamily: "'Courier New', monospace"
+            fontFamily: "'Courier New', monospace",
+            padding: isMobile ? '0 16px' : '0'
           }}>
-            // Building the future through innovative engineering solutions
+            {isMobile ? 'Building the future through engineering' : '// Building the future through innovative engineering solutions'}
           </p>
-
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', marginBottom: '48px' }}>
+          
+          <div style={{ display: 'flex', justifyContent: 'center', gap: isMobile ? '16px' : '24px', marginBottom: '48px' }}>
             {[
               { Icon: Github, url: "https://github.com/ManahilSaeed" },
               { Icon: Linkedin, url: "https://www.linkedin.com/in/manahil-saeed-/" },
               { Icon: Mail, url: "mailto:manahilsaeed26@gmail.com" }
             ].map(({ Icon, url }, index) => (
-              <a
-                key={index}
+              <a 
+                key={index} 
                 href={url}
                 style={{
                   ...baseStyles.button,
-                  padding: '16px'
+                  padding: isMobile ? '12px' : '16px'
                 }}
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(0, 212, 255, 0.3)';
-                  e.target.style.transform = 'scale(1.1)';
-                  e.target.style.boxShadow = '0 0 20px rgba(0, 212, 255, 0.5)';
+                  if (!isMobile) {
+                    e.target.style.backgroundColor = 'rgba(0, 212, 255, 0.3)';
+                    e.target.style.transform = 'scale(1.1)';
+                    e.target.style.boxShadow = '0 0 20px rgba(0, 212, 255, 0.5)';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(0, 212, 255, 0.2)';
-                  e.target.style.transform = 'scale(1)';
-                  e.target.style.boxShadow = 'none';
+                  if (!isMobile) {
+                    e.target.style.backgroundColor = 'rgba(0, 212, 255, 0.2)';
+                    e.target.style.transform = 'scale(1)';
+                    e.target.style.boxShadow = 'none';
+                  }
                 }}
               >
-                <Icon size={24} />
+                <Icon size={isMobile ? 18 : 24} />
               </a>
             ))}
           </div>
-
-          <button
+          
+          <button 
             onClick={() => scrollToSection('experience')}
-            style={{
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
+            style={{ 
+              background: 'none', 
+              border: 'none', 
+              cursor: 'pointer', 
               animation: 'bounceGlow 2s infinite',
               color: '#00d4ff'
             }}
           >
-            <ChevronDown size={32} />
+            <ChevronDown size={isMobile ? 24 : 32} />
           </button>
         </div>
       </section>
@@ -548,22 +572,22 @@ const Portfolio = () => {
       {/* Experience Section */}
       <section id="experience" style={baseStyles.section}>
         <div style={baseStyles.maxWidth}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{
-              fontSize: '3.5rem',
-              fontWeight: 'bold',
-              marginBottom: '16px',
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '40px' : '64px' }}>
+            <h2 style={{ 
+              fontSize: isMobile ? '2.5rem' : '3.5rem', 
+              fontWeight: 'bold', 
+              marginBottom: '16px', 
               ...baseStyles.gradientText,
               fontFamily: "'Courier New', monospace"
             }}>
               &gt; Experience.log
             </h2>
-            <p style={{ color: '#66b3ff', fontSize: '18px', fontFamily: "'Courier New', monospace" }}>
-              // Professional journey and career milestones
+            <p style={{ color: '#66b3ff', fontSize: isMobile ? '14px' : '18px', fontFamily: "'Courier New', monospace" }}>
+              {isMobile ? 'Professional journey' : '// Professional journey and career milestones'}
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? '20px' : '32px' }}>
             {experiences.map((exp, index) => (
               <div key={index} style={{
                 ...baseStyles.card,
@@ -571,57 +595,70 @@ const Portfolio = () => {
                 position: 'relative',
                 overflow: 'hidden'
               }}
-                onMouseEnter={(e) => {
+              onMouseEnter={(e) => {
+                if (!isMobile) {
                   e.currentTarget.style.backgroundColor = 'rgba(0, 30, 60, 0.9)';
                   e.currentTarget.style.transform = 'translateY(-5px)';
                   e.currentTarget.style.boxShadow = `0 10px 30px rgba(${exp.color === '#00d4ff' ? '0, 212, 255' : exp.color === '#0099ff' ? '0, 153, 255' : '0, 102, 255'}, 0.3)`;
-                }}
-                onMouseLeave={(e) => {
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isMobile) {
                   e.currentTarget.style.backgroundColor = 'rgba(0, 20, 40, 0.8)';
                   e.currentTarget.style.transform = 'translateY(0)';
                   e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 100, 200, 0.1)';
+                }
+              }}>
+                {/* Circuit pattern overlay - hide on mobile */}
+                {!isMobile && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '100px',
+                    height: '100px',
+                    opacity: 0.1,
+                    background: `radial-gradient(circle, ${exp.color} 1px, transparent 1px)`,
+                    backgroundSize: '10px 10px'
+                  }} />
+                )}
+                
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  alignItems: 'flex-start', 
+                  marginBottom: '16px',
+                  flexDirection: isMobile ? 'column' : 'row',
+                  gap: isMobile ? '12px' : '0'
                 }}>
-                {/* Circuit pattern overlay */}
-                <div style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: '100px',
-                  height: '100px',
-                  opacity: 0.1,
-                  background: `radial-gradient(circle, ${exp.color} 1px, transparent 1px)`,
-                  backgroundSize: '10px 10px'
-                }} />
-
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <div style={{
-                      width: '60px',
-                      height: '60px',
+                      width: isMobile ? '40px' : '60px',
+                      height: isMobile ? '40px' : '60px',
                       borderRadius: '8px',
                       backgroundColor: exp.color,
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '24px',
+                      fontSize: isMobile ? '16px' : '24px',
                       marginRight: '20px',
                       boxShadow: `0 0 15px ${exp.color}50`
                     }}>
                       {exp.logo}
                     </div>
                     <div>
-                      <h3 style={{
-                        fontSize: '24px',
-                        fontWeight: 'bold',
-                        color: exp.color,
+                      <h3 style={{ 
+                        fontSize: isMobile ? '16px' : '24px', 
+                        fontWeight: 'bold', 
+                        color: exp.color, 
                         marginBottom: '8px',
                         fontFamily: "'Courier New', monospace"
                       }}>
                         {exp.title}
                       </h3>
-                      <p style={{
-                        fontSize: '18px',
-                        color: '#ffffff',
+                      <p style={{ 
+                        fontSize: isMobile ? '12px' : '18px', 
+                        color: '#ffffff', 
                         margin: 0,
                         fontFamily: "'Courier New', monospace"
                       }}>
@@ -629,32 +666,34 @@ const Portfolio = () => {
                       </p>
                     </div>
                   </div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
                     color: '#66b3ff',
-                    fontFamily: "'Courier New', monospace"
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: isMobile ? '10px' : '14px'
                   }}>
-                    <Calendar size={16} style={{ marginRight: '8px' }} />
+                    <Calendar size={isMobile ? 12 : 16} style={{ marginRight: '8px' }} />
                     {exp.period}
                   </div>
                 </div>
-                <p style={{
-                  color: '#cccccc',
+                <p style={{ 
+                  color: '#cccccc', 
                   marginBottom: '16px',
                   fontFamily: "'Courier New', monospace",
-                  fontSize: '14px'
+                  fontSize: isMobile ? '11px' : '14px',
+                  lineHeight: '1.4'
                 }}>
                   {exp.description}
                 </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: isMobile ? '4px' : '8px' }}>
                   {exp.skills.map((skill, skillIndex) => (
                     <span key={skillIndex} style={{
-                      padding: '6px 12px',
+                      padding: isMobile ? '3px 6px' : '6px 12px',
                       backgroundColor: `${exp.color}20`,
                       color: exp.color,
                       borderRadius: '4px',
-                      fontSize: '12px',
+                      fontSize: isMobile ? '9px' : '12px',
                       border: `1px solid ${exp.color}40`,
                       fontFamily: "'Courier New', monospace"
                     }}>
@@ -671,24 +710,24 @@ const Portfolio = () => {
       {/* Projects Section */}
       <section id="projects" style={{ ...baseStyles.section, backgroundColor: 'rgba(0, 30, 60, 0.2)' }}>
         <div style={baseStyles.maxWidth}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{
-              fontSize: '3.5rem',
-              fontWeight: 'bold',
-              marginBottom: '16px',
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '40px' : '64px' }}>
+            <h2 style={{ 
+              fontSize: isMobile ? '2.5rem' : '3.5rem', 
+              fontWeight: 'bold', 
+              marginBottom: '16px', 
               ...baseStyles.gradientText,
               fontFamily: "'Courier New', monospace"
             }}>
               &gt; Projects.exe
             </h2>
-            <p style={{ color: '#66b3ff', fontSize: '18px', fontFamily: "'Courier New', monospace" }}>
-              // Recent builds and innovative solutions
+            <p style={{ color: '#66b3ff', fontSize: isMobile ? '14px' : '18px', fontFamily: "'Courier New', monospace" }}>
+              {isMobile ? 'Recent builds' : '// Recent builds and innovative solutions'}
             </p>
           </div>
 
-          <div style={{
+          <div style={{ 
             ...baseStyles.grid,
-            gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))'
+            gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(350px, 1fr))'
           }}>
             {projects.map((project, index) => (
               <div key={index} style={{
@@ -697,56 +736,62 @@ const Portfolio = () => {
                 position: 'relative',
                 overflow: 'hidden'
               }}
-                onMouseEnter={(e) => {
+              onMouseEnter={(e) => {
+                if (!isMobile) {
                   e.currentTarget.style.backgroundColor = 'rgba(0, 30, 60, 0.9)';
                   e.currentTarget.style.transform = 'scale(1.03) rotateX(5deg)';
                   e.currentTarget.style.boxShadow = `0 15px 35px rgba(${project.color === '#00d4ff' ? '0, 212, 255' : project.color === '#0099ff' ? '0, 153, 255' : '0, 102, 255'}, 0.4)`;
-                }}
-                onMouseLeave={(e) => {
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!isMobile) {
                   e.currentTarget.style.backgroundColor = 'rgba(0, 20, 40, 0.8)';
                   e.currentTarget.style.transform = 'scale(1) rotateX(0deg)';
                   e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 100, 200, 0.1)';
-                }}>
-                {/* Hexagonal pattern overlay */}
-                <div style={{
-                  position: 'absolute',
-                  top: '-50px',
-                  right: '-50px',
-                  width: '100px',
-                  height: '100px',
-                  opacity: 0.1,
-                  transform: 'rotate(45deg)',
-                  border: `2px solid ${project.color}`
-                }} />
-
+                }
+              }}>
+                {/* Hexagonal pattern overlay - hide on mobile */}
+                {!isMobile && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-50px',
+                    right: '-50px',
+                    width: '100px',
+                    height: '100px',
+                    opacity: 0.1,
+                    transform: 'rotate(45deg)',
+                    border: `2px solid ${project.color}`
+                  }} />
+                )}
+                
                 <div style={{ marginBottom: '16px' }}>
-                  <h3 style={{
-                    fontSize: '22px',
-                    fontWeight: 'bold',
-                    color: project.color,
+                  <h3 style={{ 
+                    fontSize: isMobile ? '16px' : '22px', 
+                    fontWeight: 'bold', 
+                    color: project.color, 
                     margin: '0 0 12px 0',
                     fontFamily: "'Courier New', monospace"
                   }}>
                     &gt; {project.title}
                   </h3>
                 </div>
-                <p style={{
-                  color: '#cccccc',
+                <p style={{ 
+                  color: '#cccccc', 
                   marginBottom: '16px',
-                  fontSize: '14px',
+                  fontSize: isMobile ? '11px' : '14px',
                   lineHeight: '1.6',
                   fontFamily: "'Courier New', monospace"
                 }}>
                   {project.description}
                 </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: isMobile ? '4px' : '8px', marginBottom: '16px' }}>
                   {project.tech.map((tech, techIndex) => (
                     <span key={techIndex} style={{
-                      padding: '4px 8px',
+                      padding: isMobile ? '2px 6px' : '4px 8px',
                       backgroundColor: `${project.color}15`,
                       color: project.color,
                       borderRadius: '3px',
-                      fontSize: '11px',
+                      fontSize: isMobile ? '9px' : '11px',
                       border: `1px solid ${project.color}30`,
                       fontFamily: "'Courier New', monospace"
                     }}>
@@ -756,9 +801,9 @@ const Portfolio = () => {
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span style={{
-                    padding: '6px 12px',
+                    padding: isMobile ? '4px 8px' : '6px 12px',
                     borderRadius: '4px',
-                    fontSize: '12px',
+                    fontSize: isMobile ? '10px' : '12px',
                     backgroundColor: 'rgba(0, 255, 136, 0.2)',
                     color: '#00ff88',
                     border: '1px solid rgba(0, 255, 136, 0.4)',
@@ -776,65 +821,69 @@ const Portfolio = () => {
       {/* Academics Section */}
       <section id="academics" style={baseStyles.section}>
         <div style={baseStyles.maxWidth}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{
-              fontSize: '3.5rem',
-              fontWeight: 'bold',
-              marginBottom: '16px',
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '40px' : '64px' }}>
+            <h2 style={{ 
+              fontSize: isMobile ? '2.5rem' : '3.5rem', 
+              fontWeight: 'bold', 
+              marginBottom: '16px', 
               ...baseStyles.gradientText,
               fontFamily: "'Courier New', monospace"
             }}>
               &gt; Education.db
             </h2>
-            <p style={{ color: '#66b3ff', fontSize: '18px', fontFamily: "'Courier New', monospace" }}>
-              // Academic achievements and learning path
+            <p style={{ color: '#66b3ff', fontSize: isMobile ? '14px' : '18px', fontFamily: "'Courier New', monospace" }}>
+              {isMobile ? 'Academic achievements' : '// Academic achievements and learning path'}
             </p>
           </div>
 
-          <div style={{ ...baseStyles.grid, gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))' }}>
+          <div style={{ ...baseStyles.grid, gridTemplateColumns: isMobile ? '1fr' : 'repeat(auto-fit, minmax(400px, 1fr))' }}>
             <div style={{
               ...baseStyles.card,
               position: 'relative',
               overflow: 'hidden'
             }}>
-              {/* Animated circuit lines */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '4px',
-                background: 'linear-gradient(90deg, transparent, #00d4ff, transparent)',
-                animation: 'slideRight 3s linear infinite'
-              }} />
-
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+              {/* Animated circuit lines - hide on mobile */}
+              {!isMobile && (
                 <div style={{
-                  width: '60px',
-                  height: '60px',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '4px',
+                  background: 'linear-gradient(90deg, transparent, #00d4ff, transparent)',
+                  animation: 'slideRight 3s linear infinite'
+                }} />
+              )}
+              
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', flexDirection: isMobile ? 'column' : 'row' }}>
+                <div style={{
+                  width: isMobile ? '40px' : '60px',
+                  height: isMobile ? '40px' : '60px',
                   backgroundColor: '#00d4ff',
                   borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginRight: '16px',
+                  marginRight: isMobile ? '0' : '16px',
+                  marginBottom: isMobile ? '12px' : '0',
                   boxShadow: '0 0 20px rgba(0, 212, 255, 0.5)'
                 }}>
-                  <GraduationCap size={32} style={{ color: '#000814' }} />
+                  <GraduationCap size={isMobile ? 20 : 32} style={{ color: '#000814' }} />
                 </div>
-                <div>
-                  <h3 style={{
-                    fontSize: '24px',
-                    fontWeight: 'bold',
-                    color: '#00d4ff',
+                <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
+                  <h3 style={{ 
+                    fontSize: isMobile ? '16px' : '24px', 
+                    fontWeight: 'bold', 
+                    color: '#00d4ff', 
                     margin: '0 0 4px 0',
                     fontFamily: "'Courier New', monospace"
                   }}>
                     Bachelor of Applied Sciences
                   </h3>
-                  <p style={{
-                    color: '#ffffff',
+                  <p style={{ 
+                    color: '#ffffff', 
                     margin: 0,
+                    fontSize: isMobile ? '12px' : '16px',
                     fontFamily: "'Courier New', monospace"
                   }}>
                     University of Toronto
@@ -842,28 +891,30 @@ const Portfolio = () => {
                 </div>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <p style={{
-                  color: '#66b3ff',
+                <p style={{ 
+                  color: '#66b3ff', 
                   margin: 0,
+                  fontSize: isMobile ? '10px' : '14px',
                   fontFamily: "'Courier New', monospace"
                 }}>
                   &gt; 2023 - 2027 + PEY
                 </p>
-                <p style={{
-                  color: '#00d4ff',
-                  margin: 0,
-                  fontWeight: 'bold',
+                <p style={{ 
+                  color: '#00d4ff', 
+                  margin: 0, 
+                  fontWeight:'bold',
+                  fontSize: isMobile ? '12px' : '16px',
                   fontFamily: "'Courier New', monospace"
                 }}>
                   Computer Engineering
                 </p>
-                <p style={{
-                  color: '#cccccc',
+                <p style={{ 
+                  color: '#cccccc', 
                   margin: 0,
-                  fontSize: '14px',
+                  fontSize: isMobile ? '10px' : '14px',
                   fontFamily: "'Courier New', monospace"
                 }}>
-                  // Pursuing double-minor in Engineering Business and Artificial Intelligence
+                  {isMobile ? 'Double-minor in Engineering Business and AI' : '// Pursuing double-minor in Engineering Business and AI'}
                 </p>
               </div>
             </div>
@@ -873,36 +924,39 @@ const Portfolio = () => {
               position: 'relative',
               overflow: 'hidden'
             }}>
-              {/* Animated circuit lines */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '4px',
-                background: 'linear-gradient(90deg, transparent, #0099ff, transparent)',
-                animation: 'slideLeft 3s linear infinite'
-              }} />
-
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px' }}>
+              {/* Animated circuit lines - hide on mobile */}
+              {!isMobile && (
                 <div style={{
-                  width: '60px',
-                  height: '60px',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: '4px',
+                  background: 'linear-gradient(90deg, transparent, #0099ff, transparent)',
+                  animation: 'slideLeft 3s linear infinite'
+                }} />
+              )}
+              
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '24px', flexDirection: isMobile ? 'column' : 'row' }}>
+                <div style={{
+                  width: isMobile ? '40px' : '60px',
+                  height: isMobile ? '40px' : '60px',
                   backgroundColor: '#0099ff',
                   borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginRight: '16px',
+                  marginRight: isMobile ? '0' : '16px',
+                  marginBottom: isMobile ? '12px' : '0',
                   boxShadow: '0 0 20px rgba(0, 153, 255, 0.5)'
                 }}>
-                  <Activity size={32} style={{ color: '#000814' }} />
+                  <Activity size={isMobile ? 20 : 32} style={{ color: '#000814' }} />
                 </div>
-                <div>
-                  <h3 style={{
-                    fontSize: '24px',
-                    fontWeight: 'bold',
-                    color: '#0099ff',
+                <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
+                  <h3 style={{ 
+                    fontSize: isMobile ? '16px' : '24px', 
+                    fontWeight: 'bold', 
+                    color: '#0099ff', 
                     margin: '0 0 4px 0',
                     fontFamily: "'Courier New', monospace"
                   }}>
@@ -910,31 +964,33 @@ const Portfolio = () => {
                   </h3>
                 </div>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {[
                   { name: 'IEEE Logistics Associate', year: '2024-2026', status: 'active' },
                   { name: 'IEEE Marketing Associate', year: '2023-2024', status: 'completed' },
                   { name: 'UofT Robotics Association (UTRA)', year: '2023-2024', status: 'completed' }
                 ].map((activity, index) => (
-                  <div key={index} style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
+                  <div key={index} style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
                     alignItems: 'center',
-                    padding: '8px',
+                    padding: isMobile ? '6px' : '8px',
                     backgroundColor: 'rgba(0, 153, 255, 0.1)',
                     borderRadius: '4px',
-                    border: '1px solid rgba(0, 153, 255, 0.3)'
+                    border: '1px solid rgba(0, 153, 255, 0.3)',
+                    flexDirection: isMobile ? 'column' : 'row',
+                    gap: isMobile ? '4px' : '8px'
                   }}>
-                    <span style={{
+                    <span style={{ 
                       color: '#ffffff',
                       fontFamily: "'Courier New', monospace",
-                      fontSize: '14px'
+                      fontSize: isMobile ? '10px' : '14px'
                     }}>
                       &gt; {activity.name}
                     </span>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{
-                        fontSize: '12px',
+                      <span style={{ 
+                        fontSize: isMobile ? '8px' : '12px', 
                         color: '#66b3ff',
                         fontFamily: "'Courier New', monospace"
                       }}>
@@ -958,84 +1014,73 @@ const Portfolio = () => {
       {/* Skills Section */}
       <section id="skills" style={{ ...baseStyles.section, backgroundColor: 'rgba(0, 30, 60, 0.2)' }}>
         <div style={baseStyles.maxWidth}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{
-              fontSize: '3.5rem',
-              fontWeight: 'bold',
-              marginBottom: '16px',
+          <div style={{ textAlign: 'center', marginBottom: isMobile ? '40px' : '64px' }}>
+            <h2 style={{ 
+              fontSize: isMobile ? '2.5rem' : '3.5rem', 
+              fontWeight: 'bold', 
+              marginBottom: '16px', 
               ...baseStyles.gradientText,
               fontFamily: "'Courier New', monospace"
             }}>
               &gt; Skills.json
             </h2>
-            <p style={{ color: '#66b3ff', fontSize: '18px', fontFamily: "'Courier New', monospace" }}>
-              // Technical arsenal and programming languages
+            <p style={{ color: '#66b3ff', fontSize: isMobile ? '14px' : '18px', fontFamily: "'Courier New', monospace" }}>
+              {isMobile ? 'Technical arsenal' : '// Technical arsenal and programming languages'}
             </p>
           </div>
 
-          <div style={{ marginBottom: '48px' }}>
-            <h3 style={{
-              color: '#00d4ff',
-              fontSize: '24px',
+          <div style={{ marginBottom: isMobile ? '32px' : '48px' }}>
+            <h3 style={{ 
+              color: '#00d4ff', 
+              fontSize: isMobile ? '18px' : '24px', 
               marginBottom: '24px',
               fontFamily: "'Courier New', monospace"
             }}>
               &gt; Programming Languages:
             </h3>
-            <div style={{
+            <div style={{ 
               ...baseStyles.grid,
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '16px'
+              gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(180px, 1fr))'
             }}>
               {skills_languages.map((skill, index) => (
                 <div key={skill.name} style={{
                   ...baseStyles.card,
                   textAlign: 'center',
                   cursor: 'pointer',
-                  padding: '24px',
+                  padding: isMobile ? '8px 6px' : '24px',
                   position: 'relative',
                   overflow: 'hidden'
                 }}
-                  onMouseEnter={(e) => {
+                onMouseEnter={(e) => {
+                  if (!isMobile) {
                     e.currentTarget.style.backgroundColor = 'rgba(0, 30, 60, 0.9)';
-                    e.currentTarget.style.transform = 'translateY(-8px) rotateY(10deg)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
                     e.currentTarget.style.boxShadow = `0 15px 30px ${skill.color}40`;
                     e.currentTarget.style.borderColor = skill.color;
-                  }}
-                  onMouseLeave={(e) => {
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isMobile) {
                     e.currentTarget.style.backgroundColor = 'rgba(0, 20, 40, 0.8)';
-                    e.currentTarget.style.transform = 'translateY(0) rotateY(0deg)';
+                    e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 100, 200, 0.1)';
                     e.currentTarget.style.borderColor = 'rgba(0, 212, 255, 0.3)';
+                  }
+                }}>
+                  
+                  <div style={{ 
+                    color: skill.color, 
+                    marginBottom: isMobile ? '8px' : '16px', 
+                    ...baseStyles.flexCenter
                   }}>
-                  {/* Animated background pattern */}
-                  <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: `repeating-linear-gradient(45deg, transparent, transparent 2px, ${skill.color}05 2px, ${skill.color}05 4px)`,
-                    opacity: 0.5
-                  }} />
-
-                  <div style={{
-                    color: skill.color,
-                    marginBottom: '16px',
-                    ...baseStyles.flexCenter,
-                    position: 'relative',
-                    zIndex: 2
-                  }}>
-                    {skill.icon}
+                    {React.cloneElement(skill.icon, { size: isMobile ? 16 : 24 })}
                   </div>
-                  <h3 style={{
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    color: '#ffffff',
+                  <h3 style={{ 
+                    fontSize: isMobile ? '11px' : '16px', 
+                    fontWeight: '600', 
+                    color: '#ffffff', 
                     margin: 0,
-                    fontFamily: "'Courier New', monospace",
-                    position: 'relative',
-                    zIndex: 2
+                    fontFamily: "'Courier New', monospace"
                   }}>
                     {skill.name}
                   </h3>
@@ -1045,69 +1090,57 @@ const Portfolio = () => {
           </div>
 
           <div>
-            <h3 style={{
-              color: '#0099ff',
-              fontSize: '24px',
+            <h3 style={{ 
+              color: '#0099ff', 
+              fontSize: isMobile ? '18px' : '24px', 
               marginBottom: '24px',
               fontFamily: "'Courier New', monospace"
             }}>
               &gt; Frameworks & Tools:
             </h3>
-            <div style={{
+            <div style={{ 
               ...baseStyles.grid,
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '16px'
+              gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(180px, 1fr))'
             }}>
               {skills.map((skill, index) => (
                 <div key={skill.name} style={{
                   ...baseStyles.card,
                   textAlign: 'center',
                   cursor: 'pointer',
-                  padding: '24px',
+                  padding: isMobile ? '12px 8px' : '24px',
                   position: 'relative',
                   overflow: 'hidden'
                 }}
-                  onMouseEnter={(e) => {
+                onMouseEnter={(e) => {
+                  if (!isMobile) {
                     e.currentTarget.style.backgroundColor = 'rgba(0, 30, 60, 0.9)';
-                    e.currentTarget.style.transform = 'translateY(-8px) rotateY(-10deg)';
+                    e.currentTarget.style.transform = 'translateY(-8px)';
                     e.currentTarget.style.boxShadow = `0 15px 30px ${skill.color}40`;
                     e.currentTarget.style.borderColor = skill.color;
-                  }}
-                  onMouseLeave={(e) => {
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isMobile) {
                     e.currentTarget.style.backgroundColor = 'rgba(0, 20, 40, 0.8)';
-                    e.currentTarget.style.transform = 'translateY(0) rotateY(0deg)';
+                    e.currentTarget.style.transform = 'translateY(0)';
                     e.currentTarget.style.boxShadow = '0 0 20px rgba(0, 100, 200, 0.1)';
                     e.currentTarget.style.borderColor = 'rgba(0, 212, 255, 0.3)';
+                  }
+                }}>
+                  
+                  <div style={{ 
+                    color: skill.color, 
+                    marginBottom: isMobile ? '8px' : '16px', 
+                    ...baseStyles.flexCenter
                   }}>
-                  {/* Hexagonal pattern */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '-20px',
-                    right: '-20px',
-                    width: '40px',
-                    height: '40px',
-                    border: `2px solid ${skill.color}30`,
-                    transform: 'rotate(45deg)',
-                    borderRadius: '4px'
-                  }} />
-
-                  <div style={{
-                    color: skill.color,
-                    marginBottom: '16px',
-                    ...baseStyles.flexCenter,
-                    position: 'relative',
-                    zIndex: 2
-                  }}>
-                    {skill.icon}
+                    {React.cloneElement(skill.icon, { size: isMobile ? 16 : 24 })}
                   </div>
-                  <h3 style={{
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    color: '#ffffff',
+                  <h3 style={{ 
+                    fontSize: isMobile ? '11px' : '16px', 
+                    fontWeight: '600', 
+                    color: '#ffffff', 
                     margin: 0,
-                    fontFamily: "'Courier New', monospace",
-                    position: 'relative',
-                    zIndex: 2
+                    fontFamily: "'Courier New', monospace"
                   }}>
                     {skill.name}
                   </h3>
@@ -1121,31 +1154,31 @@ const Portfolio = () => {
       {/* Contact Section */}
       <section id="contact" style={baseStyles.section}>
         <div style={{ ...baseStyles.maxWidth, textAlign: 'center' }}>
-          <h2 style={{
-            fontSize: '3.5rem',
-            fontWeight: 'bold',
-            marginBottom: '16px',
+          <h2 style={{ 
+            fontSize: isMobile ? '2.5rem' : '3.5rem', 
+            fontWeight: 'bold', 
+            marginBottom: '16px', 
             ...baseStyles.gradientText,
             fontFamily: "'Courier New', monospace"
           }}>
             &gt; Contact.init()
           </h2>
-          <p style={{
-            color: '#66b3ff',
-            fontSize: '20px',
-            marginBottom: '48px',
+          <p style={{ 
+            color: '#66b3ff', 
+            fontSize: isMobile ? '16px' : '20px', 
+            marginBottom: isMobile ? '32px' : '48px',
             fontFamily: "'Courier New', monospace"
           }}>
-            // Ready to connect and collaborate
+            {isMobile ? 'Ready to connect' : '// Ready to connect and collaborate'}
           </p>
 
           {/* Terminal-style contact info */}
           <div style={{
-            maxWidth: '600px',
+            maxWidth: isMobile ? '95%' : '600px',
             margin: '0 auto',
             ...baseStyles.terminal,
             textAlign: 'left',
-            fontSize: '16px'
+            fontSize: isMobile ? '10px' : '16px'
           }}>
             <div style={{ color: '#00ff88', marginBottom: '8px' }}>
               $ connect --user manahil
@@ -1157,10 +1190,10 @@ const Portfolio = () => {
               &gt; Email: manahilsaeed26@gmail.com
             </div>
             <div style={{ color: '#00d4ff', marginBottom: '8px' }}>
-              &gt; GitHub: github.com/ManahilSaeed
+              &gt; GitHub: {isMobile ? 'ManahilSaeed' : 'github.com/ManahilSaeed'}
             </div>
             <div style={{ color: '#00d4ff', marginBottom: '8px' }}>
-              &gt; LinkedIn: linkedin.com/in/manahil-saeed-/
+              &gt; LinkedIn: {isMobile ? 'manahil-saeed-' : 'linkedin.com/in/manahil-saeed-/'}
             </div>
             <div style={{ color: '#00d4ff', marginBottom: '16px' }}>
               &gt; Location: Toronto, ON
@@ -1170,41 +1203,51 @@ const Portfolio = () => {
             </div>
           </div>
 
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: '24px',
-            marginTop: '48px'
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            gap: isMobile ? '12px' : '24px', 
+            marginTop: isMobile ? '32px' : '48px',
+            flexDirection: isMobile ? 'column' : 'row',
+            alignItems: 'center',
+            maxWidth: isMobile ? '250px' : 'none',
+            margin: `${isMobile ? '32px' : '48px'} auto 0`
           }}>
             {[
               { Icon: Github, url: "https://github.com/ManahilSaeed", label: 'GitHub' },
               { Icon: Linkedin, url: "https://www.linkedin.com/in/manahil-saeed-/", label: 'LinkedIn' },
               { Icon: Mail, url: "mailto:manahilsaeed26@gmail.com", label: 'Email' }
             ].map(({ Icon, url, label }, index) => (
-              <a
-                key={index}
+              <a 
+                key={index} 
                 href={url}
                 style={{
                   ...baseStyles.button,
-                  padding: '16px 24px',
+                  padding: isMobile ? '10px 16px' : '16px 24px',
                   gap: '8px',
                   borderRadius: '8px',
-                  textDecoration: 'none'
+                  textDecoration: 'none',
+                  fontSize: isMobile ? '12px' : '16px',
+                  width: isMobile ? '100%' : 'auto'
                 }}
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(0, 212, 255, 0.3)';
-                  e.target.style.transform = 'translateY(-3px)';
-                  e.target.style.boxShadow = '0 10px 25px rgba(0, 212, 255, 0.4)';
+                  if (!isMobile) {
+                    e.target.style.backgroundColor = 'rgba(0, 212, 255, 0.3)';
+                    e.target.style.transform = 'translateY(-3px)';
+                    e.target.style.boxShadow = '0 10px 25px rgba(0, 212, 255, 0.4)';
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'rgba(0, 212, 255, 0.2)';
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = 'none';
+                  if (!isMobile) {
+                    e.target.style.backgroundColor = 'rgba(0, 212, 255, 0.2)';
+                    e.target.style.transform = 'translateY(0)';
+                    e.target.style.boxShadow = 'none';
+                  }
                 }}
               >
-                <Icon size={20} />
+                <Icon size={isMobile ? 14 : 20} />
                 {label}
               </a>
             ))}
@@ -1213,19 +1256,19 @@ const Portfolio = () => {
       </section>
 
       {/* Footer */}
-      <footer style={{
-        padding: '32px 24px',
+      <footer style={{ 
+        padding: isMobile ? '24px 16px' : '32px 24px', 
         borderTop: '1px solid rgba(0, 212, 255, 0.3)',
         backgroundColor: 'rgba(0, 8, 20, 0.8)'
       }}>
         <div style={{ ...baseStyles.maxWidth, textAlign: 'center' }}>
-          <p style={{
-            color: '#66b3ff',
+          <p style={{ 
+            color: '#66b3ff', 
             margin: 0,
             fontFamily: "'Courier New', monospace",
-            fontSize: '14px'
+            fontSize: isMobile ? '10px' : '14px'
           }}>
-            &gt; Manahil Saeed
+            {isMobile ? '&gt; Built with React.js' : '&gt; Built with React.js | Designed with <3 for innovation'}
           </p>
         </div>
       </footer>
@@ -1300,6 +1343,17 @@ const Portfolio = () => {
         ::selection {
           background: rgba(0, 212, 255, 0.3);
           color: #ffffff;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+          body {
+            overflow-x: hidden;
+          }
+          
+          * {
+            -webkit-tap-highlight-color: rgba(0, 212, 255, 0.3);
+          }
         }
       `}</style>
     </div>
